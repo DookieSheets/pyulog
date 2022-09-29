@@ -3,7 +3,11 @@
 from __future__ import print_function
 
 import argparse
+from cmath import inf
 import os
+import re
+
+from pyulog.utils.euler import addEulerAngles
 
 from pyulog import ULog
 from hdf5storage import savemat
@@ -69,10 +73,29 @@ def convert_ulog2mat(ulog_file_name, messages, output, disable_str_exceptions=Fa
         "data": {}
     }
 
+    # Find the minimum timestamp for time shifting
+    min_timestamp = inf
+
+    for d in data:
+        if d.name == 'parameter_update' or d.name == 'event':
+            continue
+
+        min_timestamp = min(min_timestamp, min(d.data['timestamp']))
+
     for d in data:
         fmt = '{0}_{1}'
         structname = fmt.format(d.name, d.multi_id)
 
-        matdata['data'][structname] = d.data
+        matdata['data'][structname] = {}
+
+        for key, value in d.data.items():
+            # Remove special characters
+            newkey = re.sub('[^a-zA-Z0-9 \n\.]', '', key)
+            matdata['data'][structname][newkey] = value
+
+            # Add time-shifted data in seconds
+            if newkey == 'timestamp':
+                matdata['data'][structname]['timestamp_shifted_sec'] = (value - min_timestamp) / 1e6
+
 
     savemat(output_file_prefix, matdata)
