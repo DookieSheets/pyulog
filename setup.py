@@ -62,6 +62,7 @@ setup(
             'ulog2kml=pyulog.ulog2kml:main',
             'ulog2rosbag=pyulog.ulog2rosbag:main',
             'ulog2mat=pyulog.ulog2mat:main',
+            'pyulog-gui=pyulog.gui:main',
         ],
     },
     packages=find_packages(),

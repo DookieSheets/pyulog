@@ -63,7 +63,6 @@ def convert_ulog2mat(ulog_file_name, messages, output, disable_str_exceptions=Fa
         base_name = os.path.basename(output_file_prefix)
         output_file_prefix = os.path.join(output, base_name)
 
-    print(output_file_prefix)
     os.path.join(output_file_prefix, ".mat")
 
     matdata = {
