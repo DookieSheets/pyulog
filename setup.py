@@ -61,6 +61,7 @@ setup(
             'ulog2csv=pyulog.ulog2csv:main',
             'ulog2kml=pyulog.ulog2kml:main',
             'ulog2rosbag=pyulog.ulog2rosbag:main',
+            'ulog2mat=pyulog.ulog2mat:main',
         ],
     },
     packages=find_packages(),
